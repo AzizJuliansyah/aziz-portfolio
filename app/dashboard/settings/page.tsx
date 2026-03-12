@@ -94,17 +94,23 @@ export default function SettingsPage() {
   if (isSettingsLoading) {
     return (
       <DashboardLayout user={user} onLogout={logout} title="Admin Settings">
-        <div className="max-w-5xl mx-auto space-y-6">
+        <div className="space-y-6">
+          <div className="flex justify-between items-center">
+            <div className="space-y-2">
+              <Skeleton width={200} height={32} />
+              <Skeleton width={400} height={24} />
+            </div>
+          </div>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-1">
-              <Card className="h-full flex flex-col items-center p-8 space-y-4">
+              <Card className="h-full" contentClassName="flex flex-col items-center space-y-4">
                 <Skeleton width={128} height={128} className="rounded-full" />
                 <Skeleton width={150} height={24} />
                 <Skeleton width={200} height={16} />
               </Card>
             </div>
             <div className="lg:col-span-2">
-              <Card className="space-y-4 h-[400px]">
+              <Card className="h-[400px]" contentClassName="space-y-4">
                 <Skeleton width={200} height={24} className="mb-4" />
                 <Skeleton className="w-full" height={40} />
                 <Skeleton className="w-full" height={40} />
@@ -174,8 +180,8 @@ export default function SettingsPage() {
                   type="button"
                   onClick={() => setActiveTab("account")}
                   className={`pb-4 px-4 text-sm font-medium transition-colors border-b-2 relative ${activeTab === "account"
-                      ? "border-blue-600 text-blue-600"
-                      : "border-transparent text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+                    ? "border-blue-600 text-blue-600"
+                    : "border-transparent text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
                     }`}
                 >
                   <div className="flex items-center gap-2">
@@ -187,8 +193,8 @@ export default function SettingsPage() {
                   type="button"
                   onClick={() => setActiveTab("appearance")}
                   className={`pb-4 px-4 text-sm font-medium transition-colors border-b-2 relative ${activeTab === "appearance"
-                      ? "border-blue-600 text-blue-600"
-                      : "border-transparent text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+                    ? "border-blue-600 text-blue-600"
+                    : "border-transparent text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
                     }`}
                 >
                   <div className="flex items-center gap-2">
@@ -273,8 +279,8 @@ export default function SettingsPage() {
                               disabled={!enableGlobalTheme}
                               onClick={() => setTheme(item.id as Theme)}
                               className={`flex flex-col items-center gap-2 p-4 rounded-xl border-[1.5px] transition-all group ${theme === item.id
-                                  ? "border-blue-600 bg-blue-50 dark:bg-blue-900/20 text-blue-600 shadow-sm"
-                                  : "border-gray-100 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700 text-gray-500"
+                                ? "border-blue-600 bg-blue-50 dark:bg-blue-900/20 text-blue-600 shadow-sm"
+                                : "border-gray-100 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700 text-gray-500"
                                 }`}
                             >
                               <div className={`p-2 rounded-full ${theme === item.id ? 'bg-blue-100 dark:bg-blue-900/40' : 'bg-gray-100 dark:bg-gray-800 group-hover:bg-gray-200 dark:group-hover:bg-gray-700'}`}>

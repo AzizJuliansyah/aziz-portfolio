@@ -5,7 +5,7 @@ import { useToast } from "@/hooks/useToast";
 import { arrayMove } from "@dnd-kit/sortable";
 import { DragEndEvent } from "@dnd-kit/core";
 
-export const useProjects = () => {
+export const useProjects = (profileId?: string) => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -14,12 +14,12 @@ export const useProjects = () => {
 
   useEffect(() => {
     fetchProjects();
-  }, []);
+  }, [profileId]);
 
   const fetchProjects = async () => {
     setIsLoading(true);
     try {
-      const data = await projectService.fetchProjects();
+      const data = await projectService.fetchProjects(profileId);
       setProjects(data);
     } catch (error: any) {
       toast.error(error.message || "Failed to fetch projects");

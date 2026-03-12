@@ -1,8 +1,9 @@
 import { Project } from "@/types/project";
 
 export const projectService = {
-  async fetchProjects(): Promise<Project[]> {
-    const res = await fetch("/api/projects");
+  async fetchProjects(profileId?: string): Promise<Project[]> {
+    const url = profileId ? `/api/projects?profileId=${profileId}` : "/api/projects";
+    const res = await fetch(url);
     if (!res.ok) throw new Error("Failed to fetch projects");
     return res.json();
   },

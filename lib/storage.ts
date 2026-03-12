@@ -22,7 +22,7 @@ export async function saveFile(file: File, folder: "profiles" | "skills" | "proj
 
 export async function deleteFile(filePath: string): Promise<void> {
   if (!filePath) return;
-  
+
   try {
     const absolutePath = path.join(process.cwd(), "public", filePath);
     await unlink(absolutePath);

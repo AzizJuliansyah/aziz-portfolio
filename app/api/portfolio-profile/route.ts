@@ -1,103 +1,51 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/config/db";
-import { saveFile, deleteFile } from "@/lib/storage";
 
 export async function GET() {
   try {
-    const { data: profile, error } = await supabase
+    const { data: profiles, error } = await supabase
       .from("portfolio_profile")
       .select("*")
-      .limit(1)
-      .single();
+      .order("updated_at", { ascending: false });
       
-    if (error && error.code !== 'PGRST116') throw error; // PGRST116 is no rows returned, which is fine if empty
+    if (error) throw error;
       
-    return NextResponse.json(profile || null);
+    return NextResponse.json(profiles || []);
   } catch (error) {
-    console.error("Failed to fetch public profile:", error);
+    console.error("Failed to fetch public profiles:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
 
-export async function PUT(request: Request) {
+export async function POST(request: Request) {
   try {
-    const formData = await request.formData();
-    const id = formData.get("id") as string;
-    const name = formData.get("name") as string;
-    const title = formData.get("title") as string;
-    const bio = formData.get("bio") as string;
-    const email = formData.get("email") as string;
-    const phone = formData.get("phone") as string;
-    const location = formData.get("location") as string;
-    
-    const avatarFile = formData.get("avatar") as File | null;
-    const cvFile = formData.get("cv") as File | null;
+    const { name } = await request.json();
 
-    if (!name || !title || !bio) {
-      return NextResponse.json({ error: "Name, title, and bio are required" }, { status: 400 });
-    }
-
-    // Fetch existing logic 
-    const { data: currentProfile, error: fetchError } = await supabase
-      .from("portfolio_profile")
-      .select("*")
-      .limit(1)
-      .single();
-
-    let avatarPath = currentProfile?.avatar;
-    if (avatarFile && avatarFile.size > 0 && typeof avatarFile !== "string") {
-      if (currentProfile?.avatar) {
-        await deleteFile(currentProfile.avatar);
-      }
-      avatarPath = await saveFile(avatarFile, "profiles");
-    }
-
-    let cvPath = currentProfile?.cv;
-    if (cvFile && cvFile.size > 0 && typeof cvFile !== "string") {
-      if (currentProfile?.cv) {
-        await deleteFile(currentProfile.cv);
-      }
-      cvPath = await saveFile(cvFile, "profiles");
+    if (!name) {
+      return NextResponse.json({ error: "Name is required" }, { status: 400 });
     }
 
     const payload = {
         name,
-        title,
-        bio,
-        email: email || "",
-        phone: phone || "",
-        location: location || "",
-        avatar: avatarPath,
-        cv: cvPath,
+        title: "New Public Profile", // Default placeholder
+        bio: "",
+        email: "",
+        phone: "",
+        location: "",
         updated_at: new Date().toISOString()
     };
 
-    let resultData;
+    const { data, error: insertError } = await supabase
+      .from("portfolio_profile")
+      .insert(payload)
+      .select()
+      .single();
+      
+    if (insertError) throw insertError;
 
-    if (currentProfile?.id) {
-       const { data, error: updateError } = await supabase
-        .from("portfolio_profile")
-        .update(payload)
-        .eq("id", currentProfile.id)
-        .select()
-        .single();
-        
-      if (updateError) throw updateError;
-      resultData = data;
-    } else {
-       const { data, error: insertError } = await supabase
-        .from("portfolio_profile")
-        .insert(payload)
-        .select()
-        .single();
-        
-      if (insertError) throw insertError;
-      resultData = data;
-    }
-
-    return NextResponse.json(resultData);
+    return NextResponse.json(data);
   } catch (error) {
-    console.error("Failed to update public profile:", error);
+    console.error("Failed to create public profile:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

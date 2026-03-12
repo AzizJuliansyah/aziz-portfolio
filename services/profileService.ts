@@ -1,19 +1,51 @@
 import { Profile } from "@/types/profile";
 
 export const profileService = {
-  async fetchProfile(): Promise<Profile> {
+  async fetchProfiles(): Promise<Profile[]> {
     const res = await fetch("/api/portfolio-profile");
-    if (!res.ok) throw new Error("Failed to fetch profile");
-    const data = await res.json();
-    return data || {}; // API returns single object or null
+    if (!res.ok) throw new Error("Failed to fetch profiles");
+    return res.json();
   },
 
-  async updateProfile(data: FormData): Promise<Profile> {
+  async fetchProfile(id: string): Promise<Profile> {
+    const res = await fetch(`/api/portfolio-profile/${id}`);
+    if (!res.ok) throw new Error("Failed to fetch profile");
+    return res.json();
+  },
+
+  async createProfile(name: string): Promise<Profile> {
     const res = await fetch("/api/portfolio-profile", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name }),
+    });
+    if (!res.ok) throw new Error("Failed to create profile");
+    return res.json();
+  },
+
+  async updateProfile(id: string, data: FormData): Promise<Profile> {
+    const res = await fetch(`/api/portfolio-profile/${id}`, {
       method: "PUT",
       body: data,
     });
     if (!res.ok) throw new Error("Failed to update profile");
+    return res.json();
+  },
+
+  async deleteProfile(id: string): Promise<void> {
+    const res = await fetch(`/api/portfolio-profile/${id}`, {
+      method: "DELETE",
+    });
+    if (!res.ok) throw new Error("Failed to delete profile");
+  },
+
+  async toggleActiveProfile(id: string, isActive: boolean): Promise<Profile> {
+    const res = await fetch(`/api/portfolio-profile/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ is_active: isActive }),
+    });
+    if (!res.ok) throw new Error("Failed to toggle active status");
     return res.json();
   },
 };

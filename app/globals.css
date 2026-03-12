@@ -61,3 +61,48 @@ body {
 
 /* Tailwind v4 dark variant fallback */
 @variant dark (&:where(.dark, .dark *));
+
+/* Premium Border Beam Animation */
+@property --border-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes border-rotate {
+  from { --border-angle: 0deg; }
+  to { --border-angle: 360deg; }
+}
+
+.animate-border-beam {
+  animation: border-rotate 4s linear infinite;
+}
+
+.border-beam-active {
+  position: relative;
+  z-index: 0;
+}
+
+.border-beam-active::before {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  z-index: -1;
+  background: conic-gradient(
+    from var(--border-angle),
+    transparent 70%,
+    #3b82f6 85%,
+    #60a5fa 100%
+  );
+  border-radius: inherit;
+  animation: border-rotate 3s linear infinite;
+}
+
+.border-beam-active::after {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  background: inherit;
+  border-radius: inherit;
+  z-index: -1;
+}

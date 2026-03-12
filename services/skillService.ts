@@ -1,8 +1,9 @@
 import { Skill } from "@/types/skill";
 
 export const skillService = {
-  async fetchSkills(): Promise<Skill[]> {
-    const res = await fetch("/api/skills");
+  async fetchSkills(profileId?: string): Promise<Skill[]> {
+    const url = profileId ? `/api/skills?profileId=${profileId}` : "/api/skills";
+    const res = await fetch(url);
     if (!res.ok) throw new Error("Failed to fetch skills");
     return res.json();
   },

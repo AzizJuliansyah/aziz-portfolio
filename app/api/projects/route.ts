@@ -2,12 +2,21 @@ import { NextResponse } from "next/server";
 import { supabase } from "@/config/db";
 import { saveFile } from "@/lib/storage";
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
-    const { data: projects, error } = await supabase
+    const { searchParams } = new URL(request.url);
+    const profileId = searchParams.get("profileId");
+
+    let query = supabase
       .from("projects")
       .select("*, project_images(*)")
       .order("order", { ascending: true });
+
+    if (profileId) {
+      query = query.eq("profile_id", profileId);
+    }
+
+    const { data: projects, error } = await query;
 
     if (error) throw error;
     
@@ -31,6 +40,7 @@ export async function POST(request: Request) {
     const info = formData.get("info") as string;
     const link = formData.get("link") as string;
     const description = formData.get("description") as string;
+    const profileId = formData.get("profileId") as string;
     const thumbnailFile = formData.get("thumbnail") as File | null;
     const galleryFiles = formData.getAll("images") as File[];
 
@@ -63,6 +73,7 @@ export async function POST(request: Request) {
         description,
         thumbnail: thumbnailPath,
         order: nextOrder,
+        profile_id: profileId || null,
       })
       .select()
       .single();

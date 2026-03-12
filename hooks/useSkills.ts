@@ -5,7 +5,7 @@ import { useToast } from "@/hooks/useToast";
 import { arrayMove } from "@dnd-kit/sortable";
 import { DragEndEvent } from "@dnd-kit/core";
 
-export const useSkills = () => {
+export const useSkills = (profileId?: string) => {
   const [skills, setSkills] = useState<Skill[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -14,12 +14,12 @@ export const useSkills = () => {
 
   useEffect(() => {
     fetchSkills();
-  }, []);
+  }, [profileId]);
 
   const fetchSkills = async () => {
     setIsLoading(true);
     try {
-      const data = await skillService.fetchSkills();
+      const data = await skillService.fetchSkills(profileId);
       setSkills(data);
     } catch (error: any) {
       toast.error(error.message || "Failed to fetch skills");
