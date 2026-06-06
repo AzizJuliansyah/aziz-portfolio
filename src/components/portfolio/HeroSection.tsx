@@ -1,12 +1,25 @@
 "use client";
 
 import { useState } from "react";
+import dynamic from "next/dynamic";
+
+const LanyardBadge = dynamic(() => import("./LanyardBadge"), {
+  ssr: false,
+});
 
 interface HeroSectionProps {
   profile: {
     name: string;
     title: string;
+    mini_tagline?: string | null;
     avatar?: string | null;
+    lanyard_texture?: string | null;
+    social_links?: Array<{
+      id: string | number;
+      name: string;
+      link: string;
+      image?: string | null;
+    }>;
   };
 }
 
@@ -17,8 +30,8 @@ export function HeroSection({ profile }: HeroSectionProps) {
     <header className="relative min-h-screen flex flex-col md:flex-row items-center justify-center px-6 md:px-20 pt-24 overflow-hidden" id="home">
       <div className="absolute top-0 right-0 w-1/3 h-full bg-surface-container-low -z-10 transition-all"></div>
       
-      <div className="w-full max-w-7xl my-10 mx-auto grid md:grid-cols-12 items-center">
-        <div className="md:col-span-7 mb-4 z-10">
+      <div className="w-full max-w-6xl my-10 mx-auto grid md:grid-cols-12 items-center">
+        <div className="md:col-span-7 mb-4 z-10 flex flex-col justify-center">
           <p className="font-label uppercase tracking-widest text-primary font-bold mb-4 opacity-80 animate-in fade-in slide-in-from-left-4 duration-700">
             Architecture of Code
           </p>
@@ -26,9 +39,40 @@ export function HeroSection({ profile }: HeroSectionProps) {
             {profile.name.split(' ')[0]}<br />
             <span className="text-outline">{profile.name.split(' ').slice(1).join(' ')}</span>
           </h1>
-          <h2 className="font-body italic text-2xl md:text-4xl text-on-surface-variant max-w-xl animate-in fade-in slide-in-from-left-12 duration-1000 delay-200">
+          {/* <h2 className="font-body italic text-2xl md:text-4xl text-on-surface-variant max-w-xl animate-in fade-in slide-in-from-left-12 duration-1000 delay-200">
             {profile.title}
-          </h2>
+          </h2> */}
+          
+          {profile.mini_tagline && (
+            <p className="font-body text-lg text-on-surface-variant/90 max-w-xl mt-4 mb-2 leading-relaxed animate-in fade-in slide-in-from-left-16 duration-1000 delay-300">
+              {profile.mini_tagline}
+            </p>
+          )}
+
+          {profile.social_links && profile.social_links.length > 0 && (
+            <div className="flex flex-wrap gap-4 mt-6 animate-in fade-in slide-in-from-left-20 duration-1000 delay-400">
+              {profile.social_links.map((social) => (
+                <a
+                  key={social.id}
+                  href={social.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title={social.name}
+                  className="w-12 h-12 rounded-xl bg-surface-container-high/60 border border-outline/10 flex items-center justify-center hover:bg-primary hover:text-white hover:border-primary transition-all duration-300 shadow-sm overflow-hidden p-2.5 group hover:-translate-y-1 hover:shadow-md backdrop-blur-sm"
+                >
+                  {social.image ? (
+                    <img
+                      src={social.image}
+                      alt={social.name}
+                      className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-110"
+                    />
+                  ) : (
+                    <span className="font-bold text-lg">{social.name.charAt(0).toUpperCase()}</span>
+                  )}
+                </a>
+              ))}
+            </div>
+          )}
         </div>
         <div
           className="md:col-span-5 relative animate-in fade-in zoom-in duration-1000"
@@ -120,6 +164,16 @@ export function HeroSection({ profile }: HeroSectionProps) {
           <div className="absolute top-10 -right-10 w-48 h-48 bg-secondary/30 rounded-full blur-[70px] md:blur-[90px] -z-10"></div>
         </div>
       </div>
+
+      {/* Floating Interactive 3D Lanyard Badge (Sticky to the top-left screen boundary)
+      <div className="fixed top-0 hidden md:block left-[-70px] z-50 w-[360px] h-[920px] pointer-events-none">
+        <LanyardBadge 
+          name={profile.name} 
+          title={profile.title} 
+          avatarUrl={profile.avatar || undefined} 
+          lanyardTextureUrl={profile.lanyard_texture || undefined} 
+        />
+      </div> */}
     </header>
   );
 }

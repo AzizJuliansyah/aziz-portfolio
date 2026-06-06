@@ -13,6 +13,7 @@ interface CropModalProps {
   onCropComplete: (croppedImage: Blob) => void;
   aspect?: number;
   shape?: "rect" | "round";
+  mimeType?: string;
 }
 
 export function CropModal({
@@ -22,6 +23,7 @@ export function CropModal({
   onCropComplete,
   aspect = 1,
   shape = "rect",
+  mimeType,
 }: CropModalProps) {
   const [crop, setCrop] = useState<Point>({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
@@ -42,7 +44,13 @@ export function CropModal({
 
     try {
       setIsProcessing(true);
-      const croppedImage = await getCroppedImg(image, croppedAreaPixels, rotation);
+      const croppedImage = await getCroppedImg(
+        image, 
+        croppedAreaPixels, 
+        rotation, 
+        { horizontal: false, vertical: false }, 
+        mimeType
+      );
       if (croppedImage) {
         onCropComplete(croppedImage);
         onClose();

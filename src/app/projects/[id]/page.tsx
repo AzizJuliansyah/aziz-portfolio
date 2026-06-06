@@ -4,7 +4,7 @@ import { use } from "react";
 import Link from "next/link";
 import { useProjectWithProfile } from "@/hooks/useProjectWithProfile";
 import { useLightbox } from "@/hooks/useLightbox";
-import { PortfolioTopbar, PortfolioFooter } from "@/components/portfolio";
+import { PortfolioTopbar, PortfolioFooter, BackToTop } from "@/components/portfolio";
 import { ProjectHero } from "@/components/portfolio/ProjectHero";
 import { ProjectFeaturedImage } from "@/components/portfolio/ProjectFeaturedImage";
 import { ProjectDetails } from "@/components/portfolio/ProjectDetails";
@@ -69,6 +69,7 @@ export default function ProjectDetail({ params }: { params: Promise<{ id: string
 
       {/* Lightbox Modal */}
       <ProjectLightbox image={lightboxImage} onClose={() => setLightboxImage(null)} />
+      <BackToTop />
     </div>
   );
 }

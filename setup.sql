@@ -43,6 +43,8 @@ CREATE TABLE portfolio_profile (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   name TEXT NOT NULL,
   title TEXT,
+  mini_tagline TEXT,
+  favicon TEXT,
   email TEXT,
   bio TEXT,
   avatar TEXT,

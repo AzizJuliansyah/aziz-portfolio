@@ -9,12 +9,14 @@ import { FileInput } from "@/components/ui/FileInput";
 interface BasicProfileFormProps {
   name: string;
   title: string;
+  miniTagline: string;
   email: string;
   bio: string;
   phone: string;
   location: string;
   avatar: File | string | null;
   cv: File | string | null;
+  favicon: File | string | null;
   isSubmitting: boolean;
   onChange: (field: string, value: any) => void;
   onSubmit: (e: React.FormEvent) => void;
@@ -23,12 +25,14 @@ interface BasicProfileFormProps {
 export function BasicProfileForm({
   name,
   title,
+  miniTagline,
   email,
   bio,
   phone,
   location,
   avatar,
   cv,
+  favicon,
   isSubmitting,
   onChange,
   onSubmit,
@@ -41,7 +45,7 @@ export function BasicProfileForm({
           <User className="w-5 h-5 text-primary" />
           <h3 className="text-lg font-semibold text-on-surface">Personal Information</h3>
         </div>
-
+ 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <Input
@@ -57,6 +61,13 @@ export function BasicProfileForm({
               value={title}
               onChange={(e) => onChange("title", e.target.value)}
               required
+            />
+          </div>
+          <div className="md:col-span-2">
+            <Input
+              label="Mini Tagline"
+              value={miniTagline}
+              onChange={(e) => onChange("mini_tagline", e.target.value)}
             />
           </div>
           <div>
@@ -103,7 +114,7 @@ export function BasicProfileForm({
           <h3 className="text-lg font-semibold text-on-surface">Media Assets</h3>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div>
             <ImageInput
               label="Profile Avatar"
@@ -111,6 +122,15 @@ export function BasicProfileForm({
               onChange={(file) => onChange("avatar", file)}
               aspectRatio="aspect-square"
             />
+          </div>
+          <div>
+            <ImageInput
+              label="Website Favicon"
+              value={favicon}
+              onChange={(file) => onChange("favicon", file)}
+              aspectRatio="aspect-square"
+            />
+            <p className="text-[10px] text-on-surface/50 mt-1">Recommended: 32x32 PNG/ICO</p>
           </div>
           <div>
             <FileInput

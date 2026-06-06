@@ -11,12 +11,15 @@ import { FileText, Briefcase, Phone, MapPin, Eye, CheckCircle2 } from "lucide-re
 interface ProfileBasicFormProps {
   name: string;
   title: string;
+  miniTagline: string;
   email: string;
   bio: string;
   phone: string;
   location: string;
   avatar: File | string | null;
   cv: File | string | null;
+  favicon: File | string | null;
+  lanyardTexture: File | string | null;
   isSubmitting: boolean;
   isCvModalOpen: boolean;
   errors?: Record<string, string>;
@@ -29,12 +32,15 @@ interface ProfileBasicFormProps {
 export function ProfileBasicForm({
   name,
   title,
+  miniTagline,
   email,
   bio,
   phone,
   location,
   avatar,
   cv,
+  favicon,
+  lanyardTexture,
   isSubmitting,
   isCvModalOpen,
   errors = {},
@@ -50,7 +56,7 @@ export function ProfileBasicForm({
       <form onSubmit={onSubmit} className="h-full flex flex-col animate-in fade-in duration-300">
         <div className="space-y-6 flex-1 w-full">
           <div className="grid gap-6 sm:grid-cols-12">
-            <div className="sm:col-span-12 md:col-span-4">
+            <div className="sm:col-span-12 md:col-span-4 space-y-4">
               <div className="max-w-48">
                 <ImageInput
                   label="Profile Avatar"
@@ -59,6 +65,26 @@ export function ProfileBasicForm({
                   aspectRatio="aspect-square"
                   error={errors.avatar}
                 />
+              </div>
+              <div className="max-w-48">
+                <ImageInput
+                  label="Lanyard Card Photo"
+                  value={lanyardTexture}
+                  onChange={(file) => onChange("lanyard_texture", file)}
+                  aspectRatio="aspect-[3/4]"
+                  error={errors.lanyard_texture}
+                />
+                <p className="text-[10px] text-on-surface/50 mt-1">Dedicated photo for 3D Lanyard Card</p>
+              </div>
+              <div className="max-w-48">
+                <ImageInput
+                  label="Website Favicon"
+                  value={favicon}
+                  onChange={(file) => onChange("favicon", file)}
+                  aspectRatio="aspect-square"
+                  error={errors.favicon}
+                />
+                <p className="text-[10px] text-on-surface/50 mt-1">Recommended: 32x32 or 64x64 PNG/ICO</p>
               </div>
             </div>
             <div className="sm:col-span-12 md:col-span-8 flex flex-col justify-start gap-5">
@@ -74,6 +100,13 @@ export function ProfileBasicForm({
                 onChange={(e) => onChange("title", e.target.value)}
                 icon={Briefcase}
                 error={errors.title}
+              />
+              <Input
+                label="Mini Tagline"
+                value={miniTagline}
+                onChange={(e) => onChange("mini_tagline", e.target.value)}
+                icon={FileText}
+                error={errors.mini_tagline}
               />
             </div>
             <div className="sm:col-span-12">

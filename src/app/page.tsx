@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { PortfolioTopbar, PortfolioFooter } from "@/components/portfolio";
+import { PortfolioTopbar, PortfolioFooter, BackToTop, ScrollVelocity } from "@/components/portfolio";
 import { HeroSection } from "@/components/portfolio/HeroSection";
 import { BioSection } from "@/components/portfolio/BioSection";
 import { ExperienceTimeline } from "@/components/portfolio/ExperienceTimeline";
@@ -72,9 +72,18 @@ export default function Home() {
       <PortfolioTopbar profile={profile} />
 
       <HeroSection profile={profile} />
+      {profile.title && (
+        <div className="py-4 md:py-6 border-y border-outline/10 bg-surface-container-low/20 backdrop-blur-xs relative z-10 my-2 overflow-hidden">
+          <ScrollVelocity
+            texts={[profile.title, profile.title]}
+            velocity={40}
+            className="font-headline"
+          />
+        </div>
+      )}
       <BioSection profile={profile} onCvModalOpen={() => setIsCvModalOpen(true)} />
-      <ExperienceTimeline workExperience={profile.work_experience || []} />
       <SkillsGrid skills={profile.skills || []} />
+      <ExperienceTimeline workExperience={profile.work_experience || []} />
       <CertificatesGrid certificates={profile.certificates || []} />
       <ProjectsBentoGrid projects={profile.projects || []} />
       <PortfolioFooter profile={profile} />
@@ -84,6 +93,7 @@ export default function Home() {
         cvUrl={cvUrl}
         profileName={profile.name}
       />
+      <BackToTop />
     </div>
   );
 }

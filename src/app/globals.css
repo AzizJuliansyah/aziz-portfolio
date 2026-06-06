@@ -314,6 +314,21 @@ body {
   to { transform: rotate(360deg); }
 }
 
+@keyframes spin-reverse-slow {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+@keyframes pulse-slow {
+  0%, 100% { opacity: 0.15; transform: scale(1); }
+  50% { opacity: 0.35; transform: scale(1.1); }
+}
+
+@keyframes pulse-ring {
+  0%, 100% { transform: scale(0.95); opacity: 0.1; }
+  50% { transform: scale(1.05); opacity: 0.25; }
+}
+
 .animate-float {
   animation: float 8s ease-in-out infinite;
 }
@@ -324,6 +339,18 @@ body {
 
 .animate-spin-slow {
   animation: spin-slow 20s linear infinite;
+}
+
+.animate-spin-reverse-slow {
+  animation: spin-reverse-slow 25s linear infinite;
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 12s ease-in-out infinite;
+}
+
+.animate-pulse-ring {
+  animation: pulse-ring 15s ease-in-out infinite;
 }
 /* Custom minimalist scrollbar */
 @layer base {

@@ -32,6 +32,7 @@ export async function PUT(
     const formData = await request.formData();
     const name = formData.get("name") as string;
     const title = formData.get("title") as string;
+    const mini_tagline = formData.get("mini_tagline") as string;
     const bio = formData.get("bio") as string;
     const email = formData.get("email") as string;
     const phone = formData.get("phone") as string;
@@ -39,6 +40,8 @@ export async function PUT(
     
     const avatarFile = formData.get("avatar") as File | null;
     const cvFile = formData.get("cv") as File | null;
+    const faviconFile = formData.get("favicon") as File | null;
+    const lanyardTextureFile = formData.get("lanyard_texture") as File | string | null;
 
     if (!name || !title) {
       return NextResponse.json({ error: "Name and title are required" }, { status: 400 });
@@ -71,15 +74,40 @@ export async function PUT(
       cvPath = await saveFile(cvFile, "profiles");
     }
 
+    let faviconPath = currentProfile.favicon;
+    if (faviconFile && faviconFile.size > 0 && typeof faviconFile !== "string") {
+      if (currentProfile.favicon) {
+        await deleteFile(currentProfile.favicon);
+      }
+      faviconPath = await saveFile(faviconFile, "profiles");
+    }
+
+    let lanyardTexturePath = currentProfile.lanyard_texture;
+    if (lanyardTextureFile instanceof File && lanyardTextureFile.size > 0) {
+      if (currentProfile.lanyard_texture) {
+        await deleteFile(currentProfile.lanyard_texture);
+      }
+      lanyardTexturePath = await saveFile(lanyardTextureFile, "profiles");
+    } else if (lanyardTextureFile === "") {
+      // Explicitly removed
+      if (currentProfile.lanyard_texture) {
+        await deleteFile(currentProfile.lanyard_texture);
+      }
+      lanyardTexturePath = null;
+    }
+
     const payload = {
         name,
         title,
+        mini_tagline: mini_tagline || "",
         bio: bio || "",
         email: email || "",
         phone: phone || "",
         location: location || "",
         avatar: avatarPath,
         cv: cvPath,
+        favicon: faviconPath,
+        lanyard_texture: lanyardTexturePath,
         updated_at: new Date().toISOString()
     };
 
@@ -109,13 +137,15 @@ export async function DELETE(
     // Fetch for file deletion
     const { data: profile, error: fetchError } = await supabase
       .from("portfolio_profile")
-      .select("avatar, cv")
+      .select("avatar, cv, favicon, lanyard_texture")
       .eq("id", id)
       .single();
 
     if (profile) {
       if (profile.avatar) await deleteFile(profile.avatar);
       if (profile.cv) await deleteFile(profile.cv);
+      if (profile.favicon) await deleteFile(profile.favicon);
+      if (profile.lanyard_texture) await deleteFile(profile.lanyard_texture);
     }
 
     const { error: deleteError } = await supabase

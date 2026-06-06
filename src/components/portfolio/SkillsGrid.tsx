@@ -22,29 +22,7 @@ interface SkillsGridProps {
 
 export function SkillsGrid({ skills }: SkillsGridProps) {
   return (
-    <section className="py-24 px-6 md:px-20 bg-surface-container-low relative overflow-hidden" id="skills">
-      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-outline/10 to-transparent"></div>
-
-      {/* Large Hex / Polygon Background Graphic */}
-      <div className="absolute -right-24 -bottom-24 opacity-[0.06] pointer-events-none">
-        <svg width="560" height="560" viewBox="0 0 560 560" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <polygon points="280,20 520,150 520,410 280,540 40,410 40,150" stroke="var(--color-primary)" strokeWidth="3" fill="var(--color-primary)" />
-        </svg>
-      </div>
-      {/* Small hex accent top-left */}
-      <div className="absolute -left-12 -top-12 opacity-[0.08] pointer-events-none">
-        <svg width="280" height="280" viewBox="0 0 280 280" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <polygon points="140,10 260,75 260,205 140,270 20,205 20,75" stroke="var(--color-tertiary)" strokeWidth="2" fill="none" />
-        </svg>
-      </div>
-      {/* Grid lines overlay */}
-      <div
-        className="absolute inset-0 opacity-[0.06] pointer-events-none"
-        style={{
-          backgroundImage: "linear-gradient(var(--color-on-surface) 1px, transparent 1px), linear-gradient(90deg, var(--color-on-surface) 1px, transparent 1px)",
-          backgroundSize: "60px 60px",
-        }}
-      />
+    <section className="py-12 px-6 md:px-20 bg-transparent relative overflow-hidden" id="skills">
       <ScrollReveal variant="slideUp">
         <div className="max-w-6xl mx-auto relative z-10">
           <div className="flex flex-col md:flex-row justify-between items-end">

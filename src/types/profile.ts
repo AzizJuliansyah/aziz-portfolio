@@ -2,10 +2,13 @@ export interface Profile {
   id: string;
   name: string;
   title?: string;
+  mini_tagline?: string;
+  favicon?: string | File;
   email?: string;
   bio?: string;
   avatar?: string | File;
   cv?: string | File;
+  lanyard_texture?: string | File;
   phone?: string;
   location?: string;
   is_active?: boolean;

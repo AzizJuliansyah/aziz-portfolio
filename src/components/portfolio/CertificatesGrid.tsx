@@ -1,5 +1,8 @@
+"use client";
+
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
+
 import { ExternalLink, Award, Calendar, ChevronLeft, ChevronRight, FileText } from "lucide-react";
 import { ScrollReveal } from "./ScrollReveal";
 import { Certificate } from "@/types";
@@ -124,18 +127,7 @@ export function CertificatesGrid({ certificates }: CertificatesGridProps) {
   if (!certificates || certificates.length === 0) return null;
 
   return (
-    <section className="pt-24 pb-24 px-6 md:px-20 bg-surface relative overflow-hidden" id="certificates">
-      {/* Blueprint Grid Pattern Background */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-[0.03] z-0"
-        style={{
-          backgroundImage: "linear-gradient(var(--color-on-surface) 1px, transparent 1px), linear-gradient(90deg, var(--color-on-surface) 1px, transparent 1px)",
-          backgroundSize: "40px 40px",
-        }}
-      />
-      
-      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-outline/10 to-transparent"></div>
-
+    <section className="py-12 px-6 md:px-20 bg-transparent relative overflow-hidden" id="certificates">
       <ScrollReveal variant="slideUp">
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="flex flex-col md:flex-row justify-between items-end mb-4 gap-4 pr-4">

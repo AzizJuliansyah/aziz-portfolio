@@ -31,10 +31,12 @@ export async function POST(request: Request) {
     const payload = {
         name,
         title: "New Public Profile", // Default placeholder
+        mini_tagline: "",
         bio: "",
         email: "",
         phone: "",
         location: "",
+        favicon: "",
         updated_at: new Date().toISOString()
     };
 

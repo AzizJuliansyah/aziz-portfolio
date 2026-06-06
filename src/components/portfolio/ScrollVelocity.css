@@ -1,0 +1,51 @@
+.parallax {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  padding: 0.15rem 0;
+}
+
+.scroller {
+  display: flex;
+  white-space: nowrap;
+  text-align: center;
+  font-family: "Space Grotesk", var(--font-headline), sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  transition: opacity 0.3s ease;
+}
+
+.scroller span {
+  flex-shrink: 0;
+}
+
+.parallax:nth-child(even) {
+  margin-top: 0.25rem;
+}
+
+.parallax:nth-child(even) .scroller {
+  color: transparent;
+  -webkit-text-stroke: 1px var(--color-primary);
+  opacity: 0.6;
+}
+
+.parallax:hover .scroller {
+  opacity: 1;
+}
+
+@media (min-width: 768px) {
+  .scroller {
+    font-size: 3rem;
+    line-height: 3.25rem;
+  }
+  .parallax {
+    padding: 0.25rem 0;
+  }
+  .parallax:nth-child(even) {
+    margin-top: 0.5rem;
+  }
+}
+

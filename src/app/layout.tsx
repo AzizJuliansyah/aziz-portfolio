@@ -10,6 +10,8 @@ import { SessionManager } from "@/components/auth/SessionManager";
 import { ErrorBoundary } from "@/components/error";
 import { getErrorMessage, Settings } from "@/types";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { SplashCursor } from "@/components/portfolio";
+
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -43,8 +45,28 @@ const getSettings = cache(async () => {
   }
 });
 
+const getActiveProfileFavicon = cache(async () => {
+  try {
+    const { data: profile } = await supabase
+      .from("portfolio_profile")
+      .select("favicon, updated_at")
+      .eq("is_active", true)
+      .maybeSingle();
+    
+    if (profile?.favicon) {
+      const timestamp = profile.updated_at ? new Date(profile.updated_at).getTime() : Date.now();
+      return `${profile.favicon}?t=${timestamp}`;
+    }
+    return null;
+  } catch (err) {
+    console.error("Failed to fetch active profile favicon:", err);
+    return null;
+  }
+});
+
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSettings();
+  const favicon = await getActiveProfileFavicon();
 
   const title = settings?.seo_title || "Aziz Juliansyah Portfolio";
   const description = settings?.seo_description || "Portfolio Aziz Juliansyah";
@@ -55,6 +77,11 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title,
     description,
+    icons: {
+      icon: favicon || "/favicon.ico",
+      shortcut: favicon || "/favicon.ico",
+      apple: favicon || "/favicon.ico",
+    },
     openGraph: {
       title,
       description,
@@ -103,10 +130,12 @@ export default async function RootLayout({
           <ThemeProvider defaultTheme={globalTheme as "light" | "dark" | "system"}>
             <ReduxProvider>
               <SessionManager>
+                {/* <SplashCursor /> */}
                 {children}
                 <ToastContainer />
                 <SpeedInsights />
               </SessionManager>
+
             </ReduxProvider>
           </ThemeProvider>
         </ErrorBoundary>

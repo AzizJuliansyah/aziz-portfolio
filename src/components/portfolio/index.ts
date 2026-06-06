@@ -14,3 +14,6 @@ export { ProjectGallery } from "./ProjectGallery";
 export { ProjectLightbox } from "./ProjectLightbox";
 export { ScrollToTop } from "./ScrollToTop";
 export { CertificatesGrid } from "./CertificatesGrid";
+export { BackToTop } from "./BackToTop";
+export { ScrollVelocity } from "./ScrollVelocity";
+export { SplashCursor } from "./SplashCursor";

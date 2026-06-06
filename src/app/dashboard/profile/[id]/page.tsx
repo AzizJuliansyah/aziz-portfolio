@@ -111,12 +111,15 @@ export default function ProfileDetailPage({ params }: { params: Promise<{ id: st
   // Profile States
   const [name, setName] = useState("");
   const [title, setTitle] = useState("");
+  const [miniTagline, setMiniTagline] = useState("");
   const [email, setEmail] = useState("");
   const [bio, setBio] = useState("");
   const [phone, setPhone] = useState("");
   const [location, setLocation] = useState("");
   const [avatar, setAvatar] = useState<File | string | null>(null);
   const [cv, setCv] = useState<File | string | null>(null);
+  const [favicon, setFavicon] = useState<File | string | null>(null);
+  const [lanyardTexture, setLanyardTexture] = useState<File | string | null>(null);
   const [isCvModalOpen, setIsCvModalOpen] = useState(false);
   const [profileErrors, setProfileErrors] = useState<Record<string, string>>({});
 
@@ -131,12 +134,15 @@ export default function ProfileDetailPage({ params }: { params: Promise<{ id: st
     if (profile) {
       setName(profile.name || "");
       setTitle(profile.title || "");
+      setMiniTagline(profile.mini_tagline || "");
       setEmail(profile.email || "");
       setBio(profile.bio || "");
       setPhone(profile.phone || "");
       setLocation(profile.location || "");
       setAvatar(profile.avatar || null);
       setCv(profile.cv || null);
+      setFavicon(profile.favicon || null);
+      setLanyardTexture(profile.lanyard_texture || null);
     }
   }, [profile]);
 
@@ -144,12 +150,15 @@ export default function ProfileDetailPage({ params }: { params: Promise<{ id: st
     switch (field) {
       case "name": setName(value as string); break;
       case "title": setTitle(value as string); break;
+      case "mini_tagline": setMiniTagline(value as string); break;
       case "email": setEmail(value as string); break;
       case "bio": setBio(value as string); break;
       case "phone": setPhone(value as string); break;
       case "location": setLocation(value as string); break;
       case "avatar": setAvatar(value); break;
       case "cv": setCv(value); break;
+      case "favicon": setFavicon(value); break;
+      case "lanyard_texture": setLanyardTexture(value); break;
     }
   };
 
@@ -158,6 +167,7 @@ export default function ProfileDetailPage({ params }: { params: Promise<{ id: st
     const formData = new FormData();
     formData.append("name", name);
     formData.append("title", title);
+    formData.append("mini_tagline", miniTagline);
     formData.append("email", email || "");
     formData.append("bio", bio || "");
     formData.append("phone", phone || "");
@@ -165,6 +175,9 @@ export default function ProfileDetailPage({ params }: { params: Promise<{ id: st
 
     if (avatar instanceof File) formData.append("avatar", avatar);
     if (cv instanceof File) formData.append("cv", cv);
+    if (favicon instanceof File) formData.append("favicon", favicon);
+    if (lanyardTexture instanceof File) formData.append("lanyard_texture", lanyardTexture);
+    if (lanyardTexture === null) formData.append("lanyard_texture", "");
 
     const result = await updateProfile(formData);
     
@@ -314,12 +327,15 @@ export default function ProfileDetailPage({ params }: { params: Promise<{ id: st
           <ProfileBasicForm
             name={name}
             title={title}
+            miniTagline={miniTagline}
             email={email}
             bio={bio}
             phone={phone}
             location={location}
             avatar={avatar}
             cv={cv}
+            favicon={favicon}
+            lanyardTexture={lanyardTexture}
             isSubmitting={isProfileSubmitting}
             isCvModalOpen={isCvModalOpen}
             errors={profileErrors}

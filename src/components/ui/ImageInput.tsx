@@ -255,6 +255,7 @@ export function ImageInput({
           onCropComplete={handleCropComplete}
           aspect={parseAspectRatio(aspectRatio)}
           shape={shape === "circle" ? "round" : "rect"}
+          mimeType={tempImage.file.type}
         />
       )}
     </div>
