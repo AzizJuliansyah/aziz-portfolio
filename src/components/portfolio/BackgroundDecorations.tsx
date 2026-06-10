@@ -129,11 +129,9 @@ export function BackgroundDecorations() {
 
           {/* Telemetry data tags orbiting around */}
           <div className="absolute -top-[12%] left-1/2 -translate-x-1/2 text-[8px] font-mono tracking-[0.25em] text-primary/45 uppercase whitespace-nowrap bg-background/60 px-1.5 py-0.5 rounded border border-outline/10 flex items-center gap-1.5">
-            <span className="w-1 h-1 rounded-full bg-primary animate-pulse" />
             SYS_STATE: ONLINE
           </div>
           <div className="absolute -bottom-[12%] left-1/2 -translate-x-1/2 text-[8px] font-mono tracking-[0.25em] text-secondary/45 uppercase whitespace-nowrap bg-background/60 px-1.5 py-0.5 rounded border border-outline/10 flex items-center gap-1.5">
-            <span className="w-1 h-1 rounded-full bg-secondary animate-pulse" />
             NET_PING: 14MS
           </div>
           <div className="absolute top-1/2 -left-[14%] -translate-y-1/2 -rotate-90 text-[8px] font-mono tracking-[0.25em] text-tertiary/45 uppercase whitespace-nowrap bg-background/60 px-1.5 py-0.5 rounded border border-outline/10">
